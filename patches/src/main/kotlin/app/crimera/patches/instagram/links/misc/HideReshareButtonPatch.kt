@@ -6,8 +6,10 @@
 
 package app.crimera.patches.instagram.links.misc
 
+import app.crimera.patches.instagram.misc.hookFlags.hookFlagsPatch
 import app.crimera.patches.instagram.misc.settings.settingsPatch
 import app.crimera.patches.instagram.utils.Constants.COMPATIBILITY_INSTAGRAM
+import app.crimera.patches.instagram.utils.addFlags
 import app.crimera.patches.instagram.utils.enableSettings
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -43,9 +45,9 @@ internal object LiveTreeGetOptionalBooleanFingerprint : Fingerprint(
 val hideReshareButtonPatch =
     bytecodePatch(
         name = "Hide reshare button",
-        description = "Hides the reshare button from both posts and reels.",
+        description = "Hides the reshare button from both posts and reels and enables it in the share sheet.",
     ) {
-        dependsOn(settingsPatch, resourceMappingPatch)
+        dependsOn(settingsPatch, resourceMappingPatch, hookFlagsPatch)
         compatibleWith(COMPATIBILITY_INSTAGRAM)
 
         execute {
@@ -66,6 +68,8 @@ val hideReshareButtonPatch =
             )
 
             enableSettings("hideReshareButton")
+            addFlags("reshareFlags")
         }
     }
+
 

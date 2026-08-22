@@ -68,6 +68,12 @@ public class HookFlags {
         }
     }
 
+    private static void reshareFlags() {
+        BOOL_FLAGS.put("82295::0", true); // ig_reposts:enabled
+        BOOL_FLAGS.put("82295::3", false); // ig_reposts:feed_ufi_button_enabled = false (hide from feed/reel bar)
+        BOOL_FLAGS.put("82295::34", true); // ig_reposts:share_sheet_entry_point_enabled = true (show in share sheet)
+    }
+
     private static void employeeOptionsFlags() {
         if(Pref.enableEmployeeOptions()){
             BOOL_FLAGS.put("28538::0", true); //ig_android_employee_options::is_enabled
