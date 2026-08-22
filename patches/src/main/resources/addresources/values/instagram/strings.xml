@@ -163,6 +163,8 @@ Note: On a clean install, the \'Tip\' animation may appear but will stop on its 
     <string name="piko_enable_more_options_on_post">Enable more option on post</string>
     <string name="piko_enable_more_options_on_post_desc">Adds an overflow menu button to get more options on post/reels, like copy description, copy username etc</string>
     <string name="piko_more_options">More options</string>
+    <string name="piko_reshare_post">Reshare</string>
+
 
     <!-- Navigation Section -->
     <string name="piko_category_hide_navigation_buttons">Hide navigation buttons</string>

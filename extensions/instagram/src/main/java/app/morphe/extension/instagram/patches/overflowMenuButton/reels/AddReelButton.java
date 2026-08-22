@@ -28,6 +28,7 @@ import app.morphe.extension.instagram.patches.overflowMenuButton.reels.buttons.D
 import app.morphe.extension.instagram.patches.overflowMenuButton.reels.buttons.DebugButton;
 import app.morphe.extension.instagram.patches.overflowMenuButton.reels.buttons.InfoButton;
 import app.morphe.extension.instagram.patches.overflowMenuButton.reels.buttons.ExternalDownloadButton;
+import app.morphe.extension.instagram.patches.overflowMenuButton.reels.buttons.ReshareButton;
 
 public class AddReelButton {
 
@@ -97,6 +98,17 @@ public class AddReelButton {
         AddReelButton.addReelButton(context,reelOverflowButton,helperObject);
     }
 
+    private static void addReshareButton(Context context, Object helperObject, Object mediaObject) {
+        // Use the same share icon as download since there's no dedicated reshare icon
+        String icon = UI.DRAWABLE_BLUB_ICON;
+        ReelButton reelButton = new ReshareButton(context, mediaObject);
+        String buttonText = str("piko_reshare_post");
+
+        ReelOverflowButton reelOverflowButton = new ReelOverflowButton(icon, reelButton, buttonText);
+
+        AddReelButton.addReelButton(context, reelOverflowButton, helperObject);
+    }
+
     public static void includeCustomReelOverflowButtons(Context context, Object helperObject, Object mediaObject){
         if(Pref.pikoDebug()){
             AddReelButton.addDebugButton(context, helperObject, mediaObject);
@@ -110,7 +122,12 @@ public class AddReelButton {
         if(Pref.moreOptionsOnPost()){
             AddReelButton.addInfoButton(context, helperObject, mediaObject);
         }
+        // When "Hide reshare button" is active, the action bar reshare is hidden
+        // and we surface it here in the overflow menu instead.
+        if(Pref.hideReshareButton()){
+            AddReelButton.addReshareButton(context, helperObject, mediaObject);
+        }
     }
 
 
-}
+}

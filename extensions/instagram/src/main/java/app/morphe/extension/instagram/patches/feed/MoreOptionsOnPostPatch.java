@@ -24,6 +24,7 @@ import app.morphe.extension.instagram.patches.download.DownloadUtils;
 import app.morphe.extension.instagram.entity.InstagramDialogBox;
 import app.morphe.extension.instagram.entity.MediaData;
 import app.morphe.extension.instagram.entity.UserData;
+import app.morphe.extension.instagram.utils.Pref;
 
 import com.instagram.common.session.UserSession;
 
@@ -41,6 +42,13 @@ public class MoreOptionsOnPostPatch {
             options.add(str("piko_copy_post_owner_username"));
             options.add(str("piko_copy_post_owner_fullname"));
             options.add(str("piko_download_options"));
+
+            // If the "Hide reshare button" setting is active, move the reshare
+            // action from the feed/reel action bar into this overflow menu.
+            if (Pref.hideReshareButton()) {
+                options.add(str("piko_reshare_post"));
+            }
+
             CharSequence[] items = options.toArray(new CharSequence[0]);
 
             dialog.addDialogMenuItems(items, new DialogInterface.OnClickListener() {
@@ -64,6 +72,15 @@ public class MoreOptionsOnPostPatch {
 
                         } else if (selectedOption.equals(str("piko_download_options"))) {
                             DownloadUtils.downloadPost(context, userSession, mediaObject, currentMediaIndex);
+
+                        } else if (selectedOption.equals(str("piko_reshare_post"))) {
+                            // Build the Instagram post link and fire a system share intent
+                            String shortcode = mediaData.getShortcode();
+                            String postUrl = "https://www.instagram.com/p/" + shortcode + "/";
+                            android.content.Intent shareIntent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+                            shareIntent.setType("text/plain");
+                            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, postUrl);
+                            context.startActivity(android.content.Intent.createChooser(shareIntent, str("piko_reshare_post")));
 
                         }
                         if (stringToCopy != null && stringToCopy.length() > 0) {
